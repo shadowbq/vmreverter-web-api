@@ -6,9 +6,11 @@ require 'bundler'
 Bundler.require
 
 require 'sinatra'
-require "sinatra/config_file"
-require "sinatra/namespace"
-require "sinatra/respond_with"
+require 'sinatra/config_file'
+require 'sinatra/namespace'
+require 'sinatra/respond_with'
+require 'sinatra/param'
+require 'sinatra/strong-params'
 
 require 'rack/csrf'
 require 'rack/protection'
@@ -27,7 +29,7 @@ require 'sinatra-initializers'
 
 use Rack::Alpaca
 
-use Rack::Session::Cookie, :secret => "WhatisTh1sMyS3cr3t!"
+use Rack::Session::Cookie, :secret => 'WhatisTh1sMyS3cr3t!'
 
 use Rack::Csrf, :raise => true
 use Rack::Protection

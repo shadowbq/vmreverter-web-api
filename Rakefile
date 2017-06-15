@@ -3,7 +3,7 @@ require 'rspec/core/rake_task'
 require 'rubygems'
 require 'bundler'
 require 'rake'
-require "bump/tasks"
+require 'bump/tasks'
 
 Bundler.require
 
