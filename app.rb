@@ -20,8 +20,7 @@ class WebApi < Sinatra::Base
   end
 
   get '/' do
-    flash[:something] = "Something Else"
-    haml :index
+    "Hello World!"
   end
 
   get '/test/syslog' do
