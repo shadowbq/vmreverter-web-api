@@ -16,6 +16,8 @@ require 'rack/csrf'
 require 'rack/protection'
 require 'rack-flash'
 
+require 'json'
+
 Bundler.require(:default, ENV['RACK_ENV'].to_sym)  # only loads environment specific gems
 if ENV['RACK_ENV'] == 'production'           # production config / requires
   true

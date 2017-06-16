@@ -15,6 +15,7 @@ gem 'rack_csrf'  #CSRF Protection
 gem 'alpaca'     #IP-based ACL lists
 gem 'shellex'   #Safe Shell Execution
 
+gem 'json'
 #Flash Notice
 gem 'rack-flash3'
 
@@ -22,12 +23,13 @@ gem 'rack-flash3'
 group :development do
   gem 'shotgun'
   gem 'pry'
+  gem 'pry-remote'
   gem 'pry-byebug'
   gem 'bump'
 end
 
 # core
-gem 'vmreverter', '~> 0.0.5'
+gem 'vmreverter', '~> 0.1.4'
 
 group :test do
   gem 'rake', '0.9.2.2'

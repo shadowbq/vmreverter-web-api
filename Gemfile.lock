@@ -162,6 +162,9 @@ GEM
     pry-byebug (3.4.2)
       byebug (~> 9.0)
       pry (~> 0.10)
+    pry-remote (0.1.8)
+      pry (~> 0.9)
+      slop (~> 3.0)
     rack (1.6.8)
     rack-flash3 (1.0.5)
       rack
@@ -209,7 +212,7 @@ GEM
     thor (0.19.4)
     tilt (2.0.7)
     trollop (2.1.2)
-    vmreverter (0.0.5)
+    vmreverter (0.1.4)
       blimpy (~> 0.6.7)
       json (~> 2.0.3)
       nokogiri (~> 1.5.5)
@@ -222,8 +225,10 @@ PLATFORMS
 DEPENDENCIES
   alpaca
   bump
+  json
   pry
   pry-byebug
+  pry-remote
   rack-flash3
   rack-protection
   rack-test (= 0.6.1)
@@ -237,7 +242,7 @@ DEPENDENCIES
   sinatra-initializers
   sinatra-param
   sinatra-strong-params
-  vmreverter (~> 0.0.5)
+  vmreverter (~> 0.1.4)
 
 BUNDLED WITH
    1.15.1

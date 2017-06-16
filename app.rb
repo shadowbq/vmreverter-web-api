@@ -5,7 +5,7 @@ class WebApi < Sinatra::Base
   register Sinatra::Namespace
   register Sinatra::Initializers
   register Sinatra::StrongParams
-  
+
   configure do
     config_file 'config/config.yml'
     set :method_override, true
@@ -21,7 +21,13 @@ class WebApi < Sinatra::Base
   end
 
   get '/' do
-    "Hello World!"
+    content_type :json
+    return basic_message "Hello World!"
+  end
+
+  get '/test' do
+    content_type :json
+    return connect_to_reverter
   end
 
   get '/test/syslog' do
@@ -43,6 +49,21 @@ class WebApi < Sinatra::Base
 
   get '/*', allows: [] do
     return badrequest 'this request is not supported'
+  end
+
+  def connect_to_reverter
+    fork do
+      @options = {:auth=>"./test/tmp/.fog", :config=>"./test/tmp/test.conf", :options_file=>nil, :lockfile=>"/var/lock/test.lock", :quiet=>true, :color=>false, :debug=>false}
+      @logger = Vmreverter::Logger.new
+      @logger.add_destination('/var/log/vmreverter.log', 'a')
+      @logger.remove_destination(STDOUT)
+      Vmreverter::Configuration.build(@options, @logger)
+      begin
+        Vmreverter::VMManager.execute!(Vmreverter::Configuration.instance)
+      rescue
+      end
+    end
+    basic_message "running test.conf"
   end
 
   def basic_message msg
