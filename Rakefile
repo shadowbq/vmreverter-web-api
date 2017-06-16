@@ -4,6 +4,7 @@ require 'rubygems'
 require 'bundler'
 require 'rake'
 require 'bump/tasks'
+require 'sinatra/strong-params'
 
 Bundler.require
 

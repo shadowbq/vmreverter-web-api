@@ -1,4 +1,5 @@
 require './app.rb'
+include Rake::DSL
 
 namespace :routes do
   task :show do
