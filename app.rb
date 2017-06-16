@@ -6,6 +6,8 @@ class WebApi < Sinatra::Base
   register Sinatra::Initializers
   register Sinatra::StrongParams
 
+  helpers Sinatra::Param
+
   configure do
     config_file 'config/config.yml'
     set :method_override, true
@@ -25,9 +27,16 @@ class WebApi < Sinatra::Base
     return basic_message "Hello World!"
   end
 
+  get '/revert/:id', allows: [:id] do
+    param :id, Integer, transform: :to_s, required: true
+
+    content_type :json
+    return connect_to_reverter(params['id'])
+  end
+
   get '/test' do
     content_type :json
-    return connect_to_reverter
+    return test_connect_to_reverter
   end
 
   get '/test/syslog' do
@@ -51,7 +60,24 @@ class WebApi < Sinatra::Base
     return badrequest 'this request is not supported'
   end
 
-  def connect_to_reverter
+  def connect_to_reverter(id)
+    return badrequest "plan #{id} not found on server." unless Pathname.new("./config/plans/_#{id}.conf").exist?
+
+    fork do
+      @options = {:auth=>"./config/auth.secret", :config=>"./config/plans/_#{id}.conf", :options_file=>nil, :lockfile=>settings.lockfile, :quiet=>true, :color=>false, :debug=>false}
+      @logger = Vmreverter::Logger.new
+      @logger.add_destination('/var/log/vmreverter.log', 'a')
+      @logger.remove_destination(STDOUT)
+      Vmreverter::Configuration.build(@options, @logger)
+      begin
+        Vmreverter::VMManager.execute!(Vmreverter::Configuration.instance)
+      rescue
+      end
+    end
+    basic_message "running configuration #{id}"
+  end
+
+  def test_connect_to_reverter
     fork do
       @options = {:auth=>"./test/tmp/.fog", :config=>"./test/tmp/test.conf", :options_file=>nil, :lockfile=>"/var/lock/test.lock", :quiet=>true, :color=>false, :debug=>false}
       @logger = Vmreverter::Logger.new

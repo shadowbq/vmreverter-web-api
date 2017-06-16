@@ -1,0 +1,6 @@
+HOSTS:
+  TestVM:
+    hypervisor: vsphere
+    snapshot: mysnap
+    tag: interesting
+    power: down

@@ -15,6 +15,7 @@ require 'sinatra/strong-params'
 require 'rack/csrf'
 require 'rack/protection'
 require 'rack-flash'
+require 'pathname'
 
 require 'json'
 
