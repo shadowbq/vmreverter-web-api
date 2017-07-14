@@ -1,3 +1,5 @@
+::MOCK = true
+
 class WebApi < Sinatra::Base
 
   register Sinatra::ConfigFile
@@ -68,10 +70,12 @@ class WebApi < Sinatra::Base
       @logger = Vmreverter::Logger.new
       @logger.add_destination('/var/log/vmreverter.log', 'a')
       @logger.remove_destination(STDOUT)
-      Vmreverter::Configuration.build(@options, @logger)
-      begin
-        Vmreverter::VMManager.execute!(Vmreverter::Configuration.instance)
-      rescue
+      unless ::MOCK
+        Vmreverter::Configuration.build(@options, @logger)
+        begin
+          Vmreverter::VMManager.execute!(Vmreverter::Configuration.instance)
+        rescue
+        end
       end
     end
     basic_message "running configuration #{id}"
